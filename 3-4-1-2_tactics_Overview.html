@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>3-4-1-2 戦術まとめ</title>
+<style>
+:root{--bg:#f1f4f1;--fg:#16231b;--card:#fff;--line:#d0dad2;--acc:#17803f;--mut:#576b5e;--tint:#e4efe7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:calc(56px + env(safe-area-inset-top,0px));scroll-behavior:smooth}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1511;--fg:#e6efe8;--card:#18211b;--line:#2c3a31;--acc:#4fd187;--mut:#9db3a4;--tint:#1d2a21;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1511;--fg:#e6efe8;--card:#18211b;--line:#2c3a31;--acc:#4fd187;--mut:#9db3a4;--tint:#1d2a21;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:"Hiragino Sans","Noto Sans JP","Yu Gothic",Meiryo,sans-serif;line-height:1.75}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--card);border-bottom:1px solid var(--line);display:flex;gap:4px;overflow-x:auto;padding:8px 12px;white-space:nowrap}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--card);z-index:6}
+nav a{color:var(--fg);text-decoration:none;font-size:.88rem;padding:4px 10px;border-radius:6px}
+nav a:hover{background:var(--tint)}
+.wrap{max-width:980px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:1.6rem;margin:8px 0 4px}
+h2{font-size:1.3rem;margin:44px 0 12px;padding-left:12px;border-left:5px solid var(--acc)}
+h3{font-size:1.02rem;margin:0 0 6px}
+.lead{color:var(--mut);margin:0 0 20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+@media(max-width:700px){.g2{grid-template-columns:1fr}}
+ul{margin:4px 0;padding-left:1.2em}li{margin:2px 0}
+.top{display:grid;grid-template-columns:minmax(200px,280px) 1fr;gap:20px;align-items:start}
+@media(max-width:700px){.top{grid-template-columns:1fr}.top svg{max-width:260px;margin:0 auto}}
+.key{background:var(--tint);border-radius:8px;padding:10px 14px;margin-top:10px;font-weight:600}
+.pt{display:flex;gap:8px;align-items:baseline}
+.chip{display:inline-block;font-weight:700;font-size:.82rem;padding:1px 8px;border-radius:5px;border:1px solid rgba(0,0,0,.4);margin-right:6px}
+.cb{background:#3b3bd9;color:#fff}.cy{background:#ffe94d;color:#222}.cm{background:#e83be8;color:#fff}.ck{background:#3a3a3a;color:#fff}
+details{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:8px 0;padding:0 16px}
+summary{cursor:pointer;font-weight:700;padding:12px 0}
+details[open] summary{border-bottom:1px solid var(--line);margin-bottom:8px}
+.note{background:var(--tint);border-radius:8px;padding:8px 12px;margin:8px 0 12px;font-size:.95rem}
+.flow{font-weight:700;color:var(--acc);margin:0 0 6px}
+.aim{color:var(--mut);font-size:.92rem;margin-top:6px}
+.fin li{font-weight:600}
+</style>
+</head>
+<body>
+<nav><a href="#concept">コンセプト</a><a href="#roles">役割</a><a href="#phase">ボール位置別</a><a href="#sides">左右の特徴</a><a href="#route">攻撃ルート</a><a href="#rules">共通ルール</a><a href="#final">設計思想</a></nav>
+<main class="wrap">
+<h1>3-4-1-2 戦術まとめ</h1>
+<p class="lead">両ウィングバック高位置・4トップ型 / 3-1-4-2可変型</p>
+
+<section id="concept">
+<h2>基本コンセプト</h2>
+<div class="top">
+<svg id="fm" viewBox="0 0 630 930" role="img" aria-label="3-4-1-2のフォーメーション図"></svg>
+<div>
+<div class="card"><p style="margin:0">両ウィングバックを高い位置に置き、LS・RSと合わせて<b>4トップに近い形</b>を作る。前線の人数と裏への脅威で相手DFラインを押し下げ、中盤とDFライン手前に生まれるスペースを使う。</p></div>
+<div class="g3" style="margin-top:12px;grid-template-columns:1fr">
+<div class="card"><span class="chip cb">CAM</span><b>シャドー</b>：前線に飛び出し、ゴール前にも入る</div>
+<div class="card"><span class="chip cy">LCM</span><b>BtoB</b>：攻守に広く動き、攻撃をサポート</div>
+<div class="card"><span class="chip cy">RCM</span><b>アンカー</b>：後方に残り、守備バランスを維持</div>
+</div>
+<div class="key">相手が下がれば、CB・LCMが持ち上がる。相手が出てくれば、前線4人とCAMが背後を狙う。</div>
+</div>
+</div>
+<h3 style="margin:30px 0 10px">攻撃時の可変イメージ（3-1-4-2）</h3>
+<div class="top"><svg id="fm2" viewBox="0 0 630 930" role="img" aria-label="3-1-4-2に可変した時の配置図"></svg>
+<div class="card"><ul><li><b>最前線</b>：LS・RS。LM・RMはそのすぐ後ろで幅を取り、4人で相手の最終ラインに圧力をかける</li><li><b>CAM</b>：LM・RMの1列後ろ。右寄りに立ち、MFとDFの間を狙う</li><li><b>LCM</b>：CAMのさらに後ろ。左寄りに立ち、前後に動く（BtoB）</li><li><b>RCM</b>：中央でアンカーとして後方に残る</li><li><b>3CB</b>：RCMの後ろで守備の基準点になる</li></ul></div></div>
+</section>
+
+<section id="roles"><h2>全ポジションの役割</h2><div class="g3" id="rl"></div></section>
+
+<section id="phase"><h2>ボールの位置に応じた動き</h2><div id="ph"></div></section>
+
+<section id="sides"><h2>左右の攻撃の特徴</h2>
+<div class="g2">
+<div class="card"><h3>左：人数をかけた連携型</h3><ul><li>LM：高い位置で幅を確保</li><li>LCM：BtoBで前進</li><li>CAM：中央で受けて前線と連携</li><li>LS：ポストプレーで味方を使う</li></ul><p class="aim">LM → LCM → CAM → LS・RS の連携で中央を崩す</p></div>
+<div class="card"><h3>右：縦への突破と裏抜け型</h3><ul><li>RM：幅と縦への突破</li><li>RS：裏への抜け出しを優先</li><li>CAM：RSへのパスを狙う受け手</li><li>RCM：後方で守備バランスを維持</li></ul><p class="aim">RMとRSの連携が優先。難しければCAMや後方に戻してやり直す</p></div>
+</div>
+<p class="note">左右の役割は固定せず、ボールの位置や相手の守備状況に応じて柔軟に使い分ける。</p>
+</section>
+
+<section id="route"><h2>攻撃時の基本ルート</h2><p class="lead">最初に狙う選択肢（第一選択）をボールを持った選手ごとに整理</p><div class="g3" id="rt"></div></section>
+
+<section id="rules"><h2>全ポジション共通ルール</h2><div class="g3" id="ru"></div></section>
+
+<section id="final"><h2>最終的な設計思想</h2>
+<div class="card"><p style="margin:0 0 8px">目指すのは、4トップの脅威で相手を押し下げ、シャドーとBtoBが中央から攻撃に加わり、アンカーが後方を支える攻撃的な3-4-1-2。</p>
+<ul class="fin"><li>LM・LS・RS・RMの4人で相手最終ラインを押し下げる</li><li>CAMはシャドーとして前線に加わり、得点に関与する</li><li>LCMはBtoBとして前進し、中央と前線をサポートする</li><li>RCMはアンカーとして後方に残り、守備バランスを維持する</li><li>相手が下がればCBやLCMが持ち上がる</li><li>中央のパス交換を基本に、左右の連携も使って崩す</li></ul></div>
+</section>
+</main>
+<script>
+const $=s=>document.querySelector(s);
+const B={GK:[312,868],LCB:[128,680],CB:[312,700],RCB:[490,688],LCM:[228,468],RCM:[412,465],LM:[57,404],RM:[570,404],CAM:[316,258],LS:[162,178],RS:[475,173]};
+const C={LS:'b',RS:'b',CAM:'b',LM:'y',RM:'y',LCM:'y',RCM:'y',LCB:'m',CB:'m',RCB:'m',GK:'k'};
+const FL={b:'#3b3bd9',y:'#ffe94d',m:'#e83be8',k:'#3a3a3a'};
+const A0={GK:[314,866],LCB:[127,560],CB:[319,601],RCB:[506,570],LCM:[227,367],RCM:[323,476],LM:[62,242],RM:[578,240],CAM:[396,318],LS:[214,178],RS:[425,179]};const drawFm=P=>'<rect width="630" height="930" fill="#0b9a4a"/><g fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="3"><rect x="4" y="4" width="622" height="922"/><path d="M4 465H626"/><circle cx="315" cy="465" r="90"/><rect x="117" y="4" width="397" height="164"/><rect x="117" y="762" width="397" height="164"/></g>'+Object.keys(P).map(k=>`<g transform="translate(${P[k]})"><rect x="-34" y="-17" width="68" height="34" rx="9" fill="${FL[C[k]]}" stroke="#0006" stroke-width="2"/><text text-anchor="middle" dominant-baseline="central" font-size="21" font-weight="700" fill="${C[k]=='y'?'#222':'#fff'}">${k}</text></g>`).join('');$('#fm').innerHTML=drawFm(B);$('#fm2').innerHTML=drawFm(A0);
+const R=[['LS','Left Striker','ポストプレー・ボールキープ・味方への落とし・攻撃の起点'],['RS','Right Striker','裏抜け・フィニッシュ・ゴール前への侵入'],['CAM','Central Attacking Midfielder','シャドー・中央での受け手・前線への飛び出し・ゴール前への侵入'],['LM','Left Midfielder','高位置の維持・幅の確保・縦突破・攻撃参加'],['RM','Right Midfielder','高位置の維持・幅の確保・縦突破・攻撃参加'],['LCM','Left Central Midfielder','BtoB・前進・攻撃参加・セカンドボール回収・即時奪回'],['RCM','Right Central Midfielder','アンカー・中央の守備・CBの前のカバー・守備バランスの維持'],['LCB','Left Center Back','左側の守備・ビルドアップ・持ち上がり'],['CB','Center Back','中央の守備・後方の統率・ビルドアップ'],['RCB','Right Center Back','右側の守備・ビルドアップ・持ち上がり'],['GK','Goalkeeper','最終ラインの背後のカバー']];
+$('#rl').innerHTML=R.map(([k,n,d])=>`<div class="card"><span class="chip c${C[k]}">${k}</span><small style="color:var(--mut)">${n}</small><ul>${d.split('・').map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('');
+const P=[
+['ビルドアップ：両WBが幅を確保する','LM・RMは外に開き、パスコースと幅を確保する。',['CBからWBへのパスコースを確保','相手のプレスをサイドへのパスで回避','中央が難しければサイドを経由して前進','相手が中央に密集していたら、両サイドで守備陣形を広げる','RCMはCBの前で受けて安定させ、LCMは前進してCAMへのパスコースを作る','前進できる状況になれば、両WBが高い位置を取る']],
+['前線にボールが入ったら：4トップを形成','LS・RS・LM・RMが高い位置を取り、4人で最終ラインに圧力をかける。',['LS：ポストプレーで起点になる','RS：裏への抜け出しを優先','LM・RM：高い位置を維持し、相手の左右DFを押し下げる','CAM：2トップの後方で縦パスを受け、ゴール前へ飛び出す','LCM：セカンドボールや中央への侵入を狙う','RCM：後方に残り、守備バランスを維持'],'4人全員が常に裏へ走るのではない。LSが収め、RSが裏を狙い、LM・RMが幅を作り、CAMが後方から加わる。相手DFに複数の判断を迫る。'],
+['相手DFラインが下がったら：後方から持ち上がる','この戦術で特に重要。前線へのロングボールやスルーパスに固執しない。',['3CBのいずれかがボールを持ち上がる','相手FWがプレスに出てきたら、その背後のスペースを使う','LCMはBtoBとして前進してサポート','CAMは相手MFとDFの間で受ける','RCMはアンカーとして後方に残る','WBは高い位置を維持し、相手DFを押し下げ続ける'],'前線の4人を意識させることで、CBやLCMが自由にボールを運べる状況を作る。'],
+['中央での攻撃：CAMとLCMを起点に崩す','4トップで相手DFラインが下がると、相手MFとDFの間にスペースが生まれる。',['CAM：MFとDFの間で受ける','LS：ポストプレーでCAMや中盤に落とす','RS：LSの落としやCAMのパスで裏へ抜ける','LCM：CAMの後方から前進して厚みを加える','LM・RM：相手DFを横に広げる','中央が空けば、CAMから縦パスやスルーパス'],'CAMは単なるパサーではない。ゴール前に侵入し、2トップとともにフィニッシュにも参加する。'],
+['ボールを失ったら：即時奪回と後方のカバー','WBが高い位置にいるため、ロスト時はサイドの背後が弱点になる。攻撃時から切り替えを意識する。',['LS・RS・CAM：相手のビルドアップを制限','LCM：ロスト直後の即時奪回を狙う','RCM：中央のスペースを埋める','LM・RM：素早く帰陣し、左右のCBをサポート','3CB：中央と左右のスペースを分担'],'RCMまで前進すると3CBの前とサイドが広がり、カウンター対応が難しくなる。RCMは攻撃時も後方のバランスを維持する。']];
+$('#ph').innerHTML=P.map((p,i)=>`<details${i==2?' open':''}><summary>${i+1}．${p[0]}</summary><p style="margin:0 0 4px">${p[1]}</p><ul>${p[2].map(x=>`<li>${x}</li>`).join('')}</ul>${p[3]?`<div class="note">${p[3]}</div>`:''}</details>`).join('');
+const T=[
+['CB・RCMが持った','CB／RCM → LCM → CAM または LS／RS','LCM','LCMが前を向けたらCAMへ縦パス。CAMが前を向けばLS・RS、またはLM・RMへ。LCMが前を向けなければ戻してやり直す。RCMは無理に前進しない。','LCMとCAMを経由し、2トップへの縦パスで突破'],
+['LCBが持った','LCB → LM → LCM または CAM → LS／RS','LM','LMからLCMへつなぎ、中央にボールを運ぶ。LCMからCAMへ縦パスを入れ、LS・RSへ。LMが高い位置なら、LSと連動して左サイドから攻める。','左サイドから中央へ入り、CAM経由で2トップへ'],
+['RCBが持った','RCB → RM → RS／CAM','RM','RMとRSの連携を優先。2人で突破できなければ、RCBまたはRCMに戻し、LCM経由で中央の基本ルートへ合流。','右サイドでRMとRSが連携し、無理なら中央へ展開'],
+['LCMが持った','LCM → CAM または LS／RS','CAM または LS','縦パスを優先。CAMが前を向けばLS・RSへ。相手が中央に集中していればLM・RMへ展開。LCMはパス後も前進する。','LCMとCAMの連携で中央を突破し、2トップへつなぐ'],
+['LMが持った','LM → LCM／CAM → LS／RS','LCM','LMからLCM、CAM、2トップへ縦パス。LSが相手CBを引きつけているなら、LMからLSへの直接パスも有効。','左サイドから中央へ入り、CAMと2トップで前進'],
+['RMが持った','RM → RS／CAM → LS','RS','RSへの縦パス、またはCAMへ。CAMが受けられるならLSへの展開も狙う。中央が塞がれていれば、RCB・RCMに戻す。','RSとの連携で突破し、CAM経由で逆サイドにも展開']];
+$('#rt').innerHTML=T.map(t=>`<div class="card"><h3>${t[0]}</h3><p class="flow">${t[1]}</p><p style="margin:0 0 4px"><b>第一選択：</b>${t[2]}</p><p style="margin:0">${t[3]}</p><p class="aim">狙い：${t[4]}</p></div>`).join('');
+const U=[
+['① 攻撃時は4トップを形成',['LS・RS：2トップとして中央に位置','LM・RM：高い位置を取り、サイドから押し上げる','CAM：2トップの後方から飛び出す','LM・RMは低い位置にとどまりすぎない。ただし横に広がりすぎず、中央の連携にも参加']],
+['② 中央の連携を優先',['LCMとCAMを攻撃の中継地点にする','LCM・CAMから2トップへの縦パスを狙う','LSのポストプレーを活用','近距離のパスコースを複数作る','個人突破より連携で崩す']],
+['③ 縦パスが塞がれたらやり直す',['無理に前へ通さない','CB・RCMに戻して相手を動かす','逆サイドへの展開も狙う','前線の4人は高い位置を維持']],
+['④ LCMとRCMの役割を分ける',['LCM（BtoB）：広く動く・前進する・CAMをサポート・パス後も前進・必要なら前線へ飛び出す・ロスト時は即時奪回','RCM（アンカー）：後方に残る・CBと中盤の間をサポート・中央を埋める・ロスト時の中央カバー・無理に飛び出さない']],
+['⑤ CAMはシャドーとして動く',['2トップの後方で受ける','LSのポストプレーに連動','RSへのスルーパスを狙う','状況に応じて自らゴール前へ飛び出す','LCMとのパス交換から前進','得点にも直接関わるポジション']]];
+$('#ru').innerHTML=U.map(u=>`<div class="card"><h3>${u[0]}</h3><ul>${u[1].map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('');
+</script>
+</body>
+</html>

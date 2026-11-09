@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>3-4-1-2 戦術解説アニメーション</title>
+<style>
+:root{--bg:#eef2ee;--fg:#16231b;--card:#fff;--line:#cfd9d1;--acc:#17803f;--mut:#566a5d;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1511;--fg:#e6efe8;--card:#18211b;--line:#2c3a31;--acc:#4fd187;--mut:#9db3a4;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1511;--fg:#e6efe8;--card:#18211b;--line:#2c3a31;--acc:#4fd187;--mut:#9db3a4;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:"Hiragino Sans","Noto Sans JP","Yu Gothic",Meiryo,sans-serif;line-height:1.7}
+.wrap{max-width:1040px;margin:0 auto;padding:16px}
+h1{font-size:1.35rem;margin:0}
+.sub{margin:2px 0 14px;color:var(--mut);font-size:.9rem}
+.grid{display:grid;grid-template-columns:minmax(260px,400px) 1fr;gap:20px;align-items:start}
+@media(max-width:760px){.grid{grid-template-columns:1fr}#pitch{max-height:68vh;margin:0 auto}}
+#pitch{width:100%;height:auto;border-radius:10px;display:block;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px}
+#tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+#tabs button,.ctl button{font:inherit;font-size:.85rem;border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:6px;padding:6px 10px;cursor:pointer}
+#tabs button.on{background:var(--acc);border-color:var(--acc);color:#fff}
+button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+h2{font-size:1.15rem;margin:0 0 2px}
+#goal{margin:0 0 12px;color:var(--mut);font-size:.9rem}
+#cap{min-height:5.6em;font-size:1.02rem;border-left:4px solid var(--acc);padding:4px 12px;margin-bottom:12px}
+#cap b{display:block;font-size:.8rem;color:var(--acc)}
+.ctl{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+#dots{display:flex;gap:6px;margin-left:auto}
+.dot{width:14px;height:14px;padding:0!important;border-radius:50%!important}
+.dot.on{background:var(--acc)!important;border-color:var(--acc)!important}
+.leg{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:14px;font-size:.8rem;color:var(--mut)}
+.leg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.tok rect{stroke:rgba(0,0,0,.55);stroke-width:2}
+.tok.hl rect{stroke:#ff9f1c;stroke-width:5}
+.lab{font-size:17px;font-weight:700;text-anchor:middle;dominant-baseline:central}
+.opp{fill:#cfd3d6;stroke:#555;stroke-width:2}
+.ball{fill:#fff;stroke:#111;stroke-width:3}
+#opps{transition:opacity .4s}
+</style>
+</head>
+<body>
+<main class="wrap">
+<h1>3-4-1-2 戦術解説アニメーション</h1>
+<p class="sub">両ウィングバック高位置・4トップ型 / 3-1-4-2可変型（上方向が攻撃方向）</p>
+<div class="grid">
+<svg id="pitch" viewBox="0 0 630 930" role="img" aria-label="サッカーのピッチと選手の動き">
+<rect width="630" height="930" fill="#0b9a4a"/>
+<g fill="#0d8c43"><rect y="0" width="630" height="155"/><rect y="310" width="630" height="155"/><rect y="620" width="630" height="155"/></g>
+<g fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="3"><rect x="4" y="4" width="622" height="922"/><path d="M4 465H626"/><circle cx="315" cy="465" r="90"/><rect x="117" y="4" width="397" height="164"/><rect x="215" y="4" width="200" height="58"/><rect x="117" y="762" width="397" height="164"/><rect x="215" y="868" width="200" height="58"/><path d="M240 168A90 90 0 0 0 390 168M240 762A90 90 0 0 1 390 762"/></g>
+</svg>
+<section class="panel">
+<div id="tabs"></div>
+<h2 id="st"></h2>
+<p id="goal"></p>
+<div id="cap" aria-live="polite"></div>
+<div class="ctl">
+<button id="prev" aria-label="前のステップ">◀ 戻る</button>
+<button id="play">⏸ 一時停止</button>
+<button id="next" aria-label="次のステップ">次へ ▶</button>
+<div id="dots"></div>
+</div>
+<div class="leg"><span><i style="background:#3b3bd9"></i>LS・RS・CAM</span><span><i style="background:#ffe94d"></i>中盤（LM・LCM・RCM・RM）</span><span><i style="background:#e83be8"></i>DF（3CB）</span><span><i style="background:#cfd3d6"></i>相手チーム</span><span><i style="background:#fff;border:2px solid #111;border-radius:50%"></i>ボール</span><span><i style="background:none;border:3px solid #ff9f1c"></i>注目の選手</span></div>
+</section>
+</div>
+</main>
+<script>
+const $=s=>document.querySelector(s);
+const B={GK:[312,868],LCB:[128,680],CB:[312,700],RCB:[490,688],LCM:[228,468],RCM:[412,465],LM:[57,404],RM:[570,404],CAM:[316,258],LS:[162,178],RS:[475,173]};
+const COL={LS:'b',RS:'b',CAM:'b',LM:'y',RM:'y',LCM:'y',RCM:'y',LCB:'m',CB:'m',RCB:'m',GK:'k'};
+const F={b:'#3b3bd9',y:'#ffe94d',m:'#e83be8',k:'#3a3a3a'};
+const mk=o=>Object.assign({},B,o);
+// 3-1-4-2に可変した時のイメージ配置（3142イメージ.png）
+const AS0=mk({LS:[214,178],RS:[425,179],LM:[62,242],RM:[578,240],CAM:[396,318],LCM:[227,367],RCM:[323,476],LCB:[127,560],CB:[319,601],RCB:[506,570],GK:[314,866]});
+// 同じ形を後ろへずらした配置（相手のPAに入りすぎない場面用）
+const sh=d=>{const o={};for(const k in AS0)o[k]=k=='GK'?AS0[k]:[AS0[k][0],AS0[k][1]+d];return o};
+const AS=sh(70),AS2=sh(120);
+// ビルドアップ開始時の形
+const BS=mk({LS:[214,340],RS:[425,340],LM:[40,520],RM:[590,520],CAM:[396,470],LCM:[227,560],RCM:[330,650],LCB:[130,725],CB:[318,745],RCB:[500,730],GK:[312,880]});
+const OX=[[100,235,395,530],[140,265,395,520],[240,390]];
+const opp=(d,m,f)=>{const r=[];[d,m,f].forEach((y,i)=>OX[i].forEach(x=>r.push([x,y])));return r};
+const S=[
+{n:'基本配置',goal:'3-4-1-2 の11人と、それぞれの役割',base:B,steps:[
+{opp:null,hl:['GK','LCB','CB','RCB'],t:'後方は3CB（LCB・CB・RCB）とGK。ビルドアップと持ち上がりの起点になる。'},
+{hl:['RCM','LCM'],t:'中央の2人は役割が違う。RCMはアンカーとして後方に残り、LCMはBtoBとして攻守に広く動く。'},
+{hl:['LM','RM'],t:'LM・RMはウィングバック。高い位置で幅を確保し、攻撃では最前線まで上がる。'},
+{hl:['CAM','LS','RS'],t:'CAMはシャドーとして前線に飛び出す。LSはポストプレー、RSは裏への抜け出しが役割。'},
+{own:AS0,hl:['LS','RS','LM','RM','CAM'],t:'攻撃時は3-1-4-2に近い形へ可変。LS・RS・LM・RMの4人が最前線で、CAM・LCMはその1列後ろ、RCMがアンカーとして残る。'}]},
+{n:'ビルドアップ',goal:'LM・RMが外に開いて幅を作り、サイドも使って前進する',base:BS,steps:[
+{opp:opp(300,410,600),ball:'CB',hl:['LM','RM'],t:'ビルドアップ開始。LM・RMは外に開き、パスコースと幅を確保する。'},
+{ball:'RCM',own:{RCM:[330,640]},hl:['RCM'],t:'RCMがCBの前でボールを受け、ビルドアップを安定させる。'},
+{ball:'LCB',hl:['LCB','LM'],t:'中央が難しければサイドを経由する。相手のプレスをサイドへのパスで外す。'},
+{ball:'LM',own:{LM:[40,480]},hl:['LM'],t:'LMが受けて前進。両サイドを使い、相手の守備陣形を横に広げる。'},
+{ball:'LCM',own:{LCM:[227,545],CAM:[396,450],LM:[40,430],RM:[590,440]},hl:['LCM','CAM','LM','RM'],t:'LCMが前を向いて受け、CAMへのパスコースを作る。ここからWBが高い位置へ上がり始める。'},
+{ball:'CAM',own:{LS:[214,320],RS:[425,320],LM:[62,345],RM:[578,345],CAM:[396,450],LCM:[227,520],RCM:[323,630]},hl:['CAM','LM','RM'],t:'LCM・CAMにボールが入ったら、LM・RMはLS・RSと同じ高さまで上がる。前線の4人が横に並び、CAMはその1列後ろ、LCMはさらに後ろに位置する。'}]},
+{n:'4トップ形成',goal:'前線の4人で相手の最終ラインを押し下げる',base:AS,steps:[
+{opp:opp(195,350,500),ball:'LCM',hl:['LS','RS','LM','RM'],t:'LS・RS・LM・RMが高い位置を取り、4人で相手最終ラインに圧力をかける。CAMは1列後ろ、LCM・RCMはさらに後ろ。'},
+{ball:'LS',own:{LS:[214,290],LCM:[227,420]},hl:['LS'],t:'LSはポストプレーで起点になる。ボールを収めて、味方への落としを狙う。'},
+{ball:'RS',own:{RS:[460,95],CAM:[330,300]},opp:opp(140,360,490),hl:['RS','CAM'],t:'RSは裏へ抜け出す。相手DFラインが下がり、手前にスペースが生まれる。4人全員が裏へ走るわけではない。'}]},
+{n:'持ち上がり',goal:'相手が下がったら、ロングボールに固執せず後方から運ぶ',base:AS2,steps:[
+{opp:opp(245,400,550),ball:'LCB',hl:['LS','RS','LM','RM'],t:'4トップの裏抜けを警戒して、相手は最終ラインを下げた。CAMは前線4人の1列後ろ。無理に前線へ蹴らない。'},
+{own:{LCB:[150,620]},ball:'LCB',hl:['LCB'],t:'3CBのいずれか（ここではLCB）が、空いたスペースへボールを持ち上がる。'},
+{own:{LCB:[185,545],LCM:[225,440]},ball:'LCB',hl:['LCB','LCM'],t:'LCMもBtoBとして前進してサポート。WBは高い位置を維持し、相手DFを押し下げ続ける。'},
+{own:{CAM:[340,360]},ball:'CAM',hl:['CAM','RCM'],t:'CAMは相手MFとDFの間で受ける。RCMはアンカーとして後方に残る。'}]},
+{n:'中央の崩し',goal:'CAMとLCMを起点に、2トップへつなぐ',base:AS2,steps:[
+{opp:opp(240,390,540),ball:'LCM',hl:['LCM'],t:'相手MFとDFの間にスペースが生まれる。LCMとCAMが攻撃の中継地点になる。'},
+{ball:'CAM',own:{LCM:[250,440],CAM:[340,355]},hl:['CAM'],t:'LCMからCAMへ縦パス。CAMは単なるパサーではなく、前を向いて仕掛ける。'},
+{ball:'LS',own:{LS:[214,335]},hl:['LS'],t:'LSがポストプレーで受け、中盤の選手へ落とす。'},
+{ball:'RS',own:{RS:[460,170],CAM:[340,290]},opp:opp(190,390,540),hl:['RS','CAM'],t:'RSが裏へ抜け、CAMもゴール前へ飛び出す。2トップとともにフィニッシュに関わる。'}]},
+{n:'ボールロスト',goal:'即時奪回と後方のカバー',base:AS,steps:[
+{opp:opp(195,350,500),ball:'RS',hl:['RS'],t:'攻撃が止められ、ボールを失う場面。'},
+{ball:'o2',hl:['LM','RM'],t:'両ウィングバックが高い位置を取るため、ボールを失った際にはサイドの背後が弱点になる。そのため、攻撃時から守備への切り替えを意識する。'},
+{ball:'o2',own:{RS:[440,240],LS:[260,235],CAM:[395,300]},opp:[[100,195],[235,195],[395,195],[530,195],[125,400],[270,375],[395,375],[540,400],[240,520],[390,520]],hl:['RS','LS','CAM'],t:'LS・RS・CAMは相手のビルドアップを制限する。'},
+{ball:'o2',own:{LM:[70,410],RM:[570,410],RCM:[323,500],LCB:[135,590],CB:[319,650],RCB:[500,600],LCM:[235,428]},opp:[[100,195],[235,195],[395,195],[530,195],[85,470],[275,390],[395,390],[555,470],[240,545],[390,545]],hl:['LM','RM','RCM','LCB','CB','RCB'],t:'LM・RMは素早く帰陣し、左右のCBをサポートする。RCMはアンカーとして中央のスペースを埋め、3CBは中央と左右のスペースを分担して守る。'},
+{ball:'o5',own:{LCM:[232,430]},hl:['LCM'],t:'LCMはボールロスト直後の即時奪回を狙う。'},
+{ball:'LCM',hl:['LCM','RCM'],t:'奪回成功。特にRCMは、両ウィングバックとLCMが前進した際の守備の要となる。'}]}
+];
+const svg=$('#pitch');
+svg.insertAdjacentHTML('beforeend','<g id="opps">'+[...Array(10)].map((_,i)=>`<circle id="o${i}" r="13" class="opp"/>`).join('')+'</g>'+Object.keys(B).map(k=>`<g class="tok" id="p_${k}"><rect x="-30" y="-15" width="60" height="30" rx="8" fill="${F[COL[k]]}"/><text class="lab" fill="${COL[k]=='y'?'#222':'#fff'}">${k}</text></g>`).join('')+'<circle id="ball" r="10" class="ball"/>');
+let si=0,pi=0,playing=true,timer,raf,cur={own:{},opp:[],ball:null};
+const lerp=(a,b,e)=>[a[0]+(b[0]-a[0])*e,a[1]+(b[1]-a[1])*e];
+function tgt(){
+ const s=S[si];let own=Object.assign({},s.base),o;
+ s.steps.forEach((st,i)=>{if(i>pi)return;Object.assign(own,st.own);if(st.opp!==undefined)o=st.opp});
+ const st=s.steps[pi];let bp=null;
+ if(st.ball){const q=st.ball[0]=='o'?o[+st.ball.slice(1)]:own[st.ball];bp=[q[0],q[1]+(st.ball[0]=='o'?20:24)]}
+ return{own,opp:o||cur.opp,show:!!o,ball:bp,hl:st.hl||[],t:st.t}}
+function draw(c){
+ for(const k in c.own)$('#p_'+k).setAttribute('transform',`translate(${c.own[k][0]},${c.own[k][1]})`);
+ c.opp.forEach((p,i)=>{const e=$('#o'+i);e.setAttribute('cx',p[0]);e.setAttribute('cy',p[1])});
+ if(c.ball){const e=$('#ball');e.setAttribute('cx',c.ball[0]);e.setAttribute('cy',c.ball[1])}}
+function go(snap){
+ const T=tgt(),s=S[si],n=s.steps.length;cancelAnimationFrame(raf);
+ $('#st').textContent=s.n;$('#goal').textContent=s.goal;
+ $('#cap').innerHTML=`<b>STEP ${pi+1} / ${n}</b>${T.t}`;
+ document.querySelectorAll('#tabs button').forEach((b,i)=>b.classList.toggle('on',i==si));
+ $('#dots').innerHTML=s.steps.map((_,i)=>`<button class="dot${i==pi?' on':''}" data-i="${i}" aria-label="ステップ${i+1}"></button>`).join('');
+ Object.keys(B).forEach(k=>$('#p_'+k).classList.toggle('hl',T.hl.includes(k)));
+ $('#opps').style.opacity=T.show?1:0;$('#ball').style.opacity=T.ball?1:0;
+ const from=JSON.parse(JSON.stringify(cur)),to={own:T.own,opp:T.opp,ball:T.ball||cur.ball};
+ if(snap||!Object.keys(from.own).length){cur=to;draw(to);return}
+ const t0=performance.now(),D=1300;
+ const fr=now=>{let e=Math.min(1,(now-t0)/D);e=e<.5?2*e*e:1-Math.pow(-2*e+2,2)/2;
+  const c={own:{},opp:to.opp.map((p,i)=>lerp(from.opp[i]||p,p,e)),ball:to.ball&&lerp(from.ball||to.ball,to.ball,e)};
+  for(const k in to.own)c.own[k]=lerp(from.own[k]||to.own[k],to.own[k],e);
+  cur=c;draw(c);if(e<1)raf=requestAnimationFrame(fr)};
+ raf=requestAnimationFrame(fr)}
+function adv(){
+ if(!playing)return;
+ if(pi<S[si].steps.length-1){pi++;run()}else{si=(si+1)%S.length;pi=0;run(true)}}
+function run(snap){go(snap);clearTimeout(timer);timer=setTimeout(adv,3600)}
+$('#tabs').innerHTML=S.map((s,i)=>`<button data-s="${i}">${s.n}</button>`).join('');
+$('#tabs').onclick=e=>{const b=e.target.closest('button');if(b){si=+b.dataset.s;pi=0;run(true)}};
+$('#dots').onclick=e=>{const b=e.target.closest('button');if(b){pi=+b.dataset.i;run()}};
+$('#prev').onclick=()=>{const n=S[si].steps.length;pi=(pi-1+n)%n;run()};
+$('#next').onclick=()=>{pi=(pi+1)%S[si].steps.length;run()};
+$('#play').onclick=()=>{playing=!playing;$('#play').textContent=playing?'⏸ 一時停止':'▶ 再生';clearTimeout(timer);if(playing)timer=setTimeout(adv,600)};
+run(true);
+</script>
+</body>
+</html>
