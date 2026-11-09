@@ -122,7 +122,7 @@ matchMedia(MQ).addEventListener('change',()=>location.reload());
 const Q=p=>M?[930-p[1],p[0]]:p;
 if(M){svg.setAttribute('viewBox','0 0 930 630');const g=document.createElementNS('http://www.w3.org/2000/svg','g');g.setAttribute('transform','matrix(0 1 -1 0 930 0)');while(svg.firstChild)g.appendChild(svg.firstChild);svg.appendChild(g)}
 svg.insertAdjacentHTML('beforeend',M?'<text x="915" y="610" text-anchor="end" font-size="24" fill="#fff" fill-opacity=".85">攻撃方向 ▶</text>':'<text x="612" y="912" text-anchor="end" font-size="22" fill="#fff" fill-opacity=".85">▲ 攻撃方向</text>');
-svg.insertAdjacentHTML('beforeend','<g id="opps">'+[...Array(10)].map((_,i)=>`<circle id="o${i}" r="${13*K}" class="opp"/>`).join('')+'</g>'+Object.keys(B).map(k=>`<g class="tok" id="p_${k}"><rect x="${-30*K}" y="${-15*K}" width="${60*K}" height="${30*K}" rx="8" fill="${F[COL[k]]}"/><text class="lab" style="font-size:${17*K}px" fill="${COL[k]=='y'?'#222':'#fff'}">${k}</text></g>`).join('')+'<circle id="ball" r="${10*K}" class="ball"/>');
+svg.insertAdjacentHTML('beforeend','<g id="opps">'+[...Array(10)].map((_,i)=>`<circle id="o${i}" r="${13*K}" class="opp"/>`).join('')+'</g>'+Object.keys(B).map(k=>`<g class="tok" id="p_${k}"><rect x="${-30*K}" y="${-15*K}" width="${60*K}" height="${30*K}" rx="8" fill="${F[COL[k]]}"/><text class="lab" style="font-size:${17*K}px" fill="${COL[k]=='y'?'#222':'#fff'}">${k}</text></g>`).join('')+'<circle id="ball" r="'+10*K+'" class="ball"/>');
 let si=0,pi=0,playing=true,timer,raf,cur={own:{},opp:[],ball:null};
 const lerp=(a,b,e)=>[a[0]+(b[0]-a[0])*e,a[1]+(b[1]-a[1])*e];
 function tgt(){
